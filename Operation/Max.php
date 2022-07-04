@@ -23,6 +23,6 @@ final class Max extends AbstractOperation
     {
         $source = $this->applySelect($source, $context);
 
-        return empty($source) ? null : \max($source);
+        return [] === $source ? null : \max($source);
     }
 }

@@ -14,7 +14,7 @@ use ObjectQuery\Exception\IncompatibleCollectionException;
 use ObjectQuery\Exception\InvalidAliasException;
 use ObjectQuery\ObjectQuery;
 use ObjectQuery\ObjectQueryContextEnvironment;
-use ObjectQuery\ObjectQueryOrder;
+use ObjectQuery\ObjectQueryOrderEnum;
 
 class QueryTest extends AbstractQueryTest
 {
@@ -79,7 +79,7 @@ class QueryTest extends AbstractQueryTest
         $query = new ObjectQuery();
         $query
             ->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Ascending, 'name')
+            ->orderBy(ObjectQueryOrderEnum::Ascending, 'name')
             ->limit(1)
         ;
 
@@ -102,7 +102,7 @@ class QueryTest extends AbstractQueryTest
         $query = new ObjectQuery();
         $query
             ->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Ascending, 'name')
+            ->orderBy(ObjectQueryOrderEnum::Ascending, 'name')
             ->limit(1)
         ;
 

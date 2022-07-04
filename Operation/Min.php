@@ -23,6 +23,6 @@ final class Min extends AbstractOperation
     {
         $source = $this->applySelect($source, $context);
 
-        return empty($source) ? null : \min($source);
+        return [] === $source ? null : \min($source);
     }
 }

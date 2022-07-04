@@ -19,7 +19,7 @@ use ObjectQuery\Modifier\Where;
 use ObjectQuery\Operation\Average;
 use ObjectQuery\Operation\Concat;
 use ObjectQuery\Operation\Count;
-use ObjectQuery\Operation\Each;
+use ObjectQuery\Operation\Map;
 use ObjectQuery\Operation\Max;
 use ObjectQuery\Operation\Min;
 use ObjectQuery\Operation\Select;
@@ -79,7 +79,7 @@ class ObjectQuery
         return $this;
     }
 
-    public function orderBy(ObjectQueryOrder $order, ?string $field = null): ObjectQuery
+    public function orderBy(ObjectQueryOrderEnum $order, ?string $field = null): ObjectQuery
     {
         if ($this->subQuery) {
             return $this->subQuery->orderBy($order, $field);
@@ -148,7 +148,7 @@ class ObjectQuery
 
     public function each(callable $callback): array
     {
-        return $this->applyOperation(Each::class, [$callback]);
+        return $this->applyOperation(Map::class, [$callback]);
     }
 
     public function max(?string $field = null): mixed

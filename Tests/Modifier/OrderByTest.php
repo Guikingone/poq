@@ -11,7 +11,7 @@ namespace ObjectQuery\Tests\Modifier;
 
 use ObjectQuery\Exception\InvalidModifierConfigurationException;
 use ObjectQuery\ObjectQuery;
-use ObjectQuery\ObjectQueryOrder;
+use ObjectQuery\ObjectQueryOrderEnum;
 use ObjectQuery\Tests\AbstractQueryTest;
 
 class OrderByTest extends AbstractQueryTest
@@ -20,7 +20,7 @@ class OrderByTest extends AbstractQueryTest
     {
         $query = new ObjectQuery();
         $query->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Ascending, 'minimalAge');
+            ->orderBy(ObjectQueryOrderEnum::Ascending, 'minimalAge');
 
         $result = $query->select();
         $this->assertSame('Paris', $result[0]->name);
@@ -31,7 +31,7 @@ class OrderByTest extends AbstractQueryTest
     {
         $query = new ObjectQuery();
         $query->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Descending, 'minimalAge');
+            ->orderBy(ObjectQueryOrderEnum::Descending, 'minimalAge');
 
         $result = $query->select();
         $this->assertSame('Lyon', $result[0]->name);
@@ -42,7 +42,7 @@ class OrderByTest extends AbstractQueryTest
     {
         $query = new ObjectQuery();
         $query->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Shuffle, 'minimalAge');
+            ->orderBy(ObjectQueryOrderEnum::Shuffle, 'minimalAge');
 
         $this->expectException(InvalidModifierConfigurationException::class);
         $this->expectExceptionMessage('The modifier "orderBy" is wrongly configured: An order field must not be provided when shuffling a collection.');
@@ -55,7 +55,7 @@ class OrderByTest extends AbstractQueryTest
             ->from($this->cities, 'city')
             ->selectMany('persons', 'person')
             ->selectMany('children', 'child')
-            ->orderBy(ObjectQueryOrder::Shuffle);
+            ->orderBy(ObjectQueryOrderEnum::Shuffle);
 
         $firstShuffle = $query->concat(', ', 'name');
         $secondShuffle = $query->concat(', ', 'name');

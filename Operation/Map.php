@@ -9,12 +9,14 @@
 
 namespace ObjectQuery\Operation;
 
+use Closure;
 use ObjectQuery\ObjectQuery;
 use ObjectQuery\ObjectQueryContext;
+use function array_map;
 
-final class Each extends AbstractOperation
+final class Map extends AbstractOperation
 {
-    private \Closure $callback;
+    private Closure $callback;
 
     public function __construct(ObjectQuery $parentQuery, callable $callback)
     {
@@ -25,6 +27,6 @@ final class Each extends AbstractOperation
 
     public function apply(array $source, ObjectQueryContext $context): array
     {
-        return \array_map($this->callback, $this->applySelect($source, $context));
+        return array_map($this->callback, $this->applySelect($source, $context));
     }
 }

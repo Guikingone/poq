@@ -90,11 +90,11 @@ $query = (new ObjectQuery())
 
 ```php
 use ObjectQuery\ObjectQuery;
-use ObjectQuery\ObjectQueryOrder;
+use ObjectQuery\ObjectQueryOrderEnum;
 
 $query = (new ObjectQuery())
     ->from($cities, 'city')
-    ->orderBy(ObjectQueryOrder::Ascending, 'name');
+    ->orderBy(ObjectQueryOrderEnum::Ascending, 'name');
 ```
 
 ### Offset

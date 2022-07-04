@@ -9,9 +9,11 @@
 
 namespace ObjectQuery\Operation;
 
+use InvalidArgumentException;
 use ObjectQuery\Exception\NonUniqueResultException;
 use ObjectQuery\ObjectQuery;
 use ObjectQuery\ObjectQueryContext;
+use function count;
 
 final class SelectOne extends AbstractOperation
 {
@@ -26,11 +28,11 @@ final class SelectOne extends AbstractOperation
     {
         $result = $this->applySelect($source, $context);
 
-        $resultCount = \count($result);
+        $resultCount = count($result);
         if ($resultCount > 1) {
             throw new NonUniqueResultException($resultCount);
         }
 
-        return $result[0] ?? null;
+        return false !== reset($result) ?: throw new InvalidArgumentException('The result cannot be returned') ?? null;
     }
 }

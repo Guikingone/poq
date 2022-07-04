@@ -12,18 +12,18 @@ namespace ObjectQuery\Modifier;
 use ObjectQuery\Exception\InvalidModifierConfigurationException;
 use ObjectQuery\ObjectQuery;
 use ObjectQuery\ObjectQueryContext;
-use ObjectQuery\ObjectQueryOrder;
+use ObjectQuery\ObjectQueryOrderEnum;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 final class OrderBy extends AbstractModifier
 {
-    private readonly ObjectQueryOrder $orderBy;
+    private readonly ObjectQueryOrderEnum $orderBy;
     private readonly ?string $orderField;
 
     protected PropertyAccessor $propertyAccessor;
 
-    public function __construct(ObjectQuery $parentQuery, ObjectQueryOrder $orderBy = ObjectQueryOrder::None, ?string $orderField = null)
+    public function __construct(ObjectQuery $parentQuery, ObjectQueryOrderEnum $orderBy = ObjectQueryOrderEnum::None, ?string $orderField = null)
     {
         parent::__construct($parentQuery);
 
@@ -34,28 +34,27 @@ final class OrderBy extends AbstractModifier
 
     public function apply(array $source, ObjectQueryContext $context): array
     {
-        if (null !== $this->orderField && ObjectQueryOrder::Shuffle === $this->orderBy) {
+        if (null !== $this->orderField && ObjectQueryOrderEnum::Shuffle === $this->orderBy) {
             throw new InvalidModifierConfigurationException('orderBy', 'An order field must not be provided when shuffling a collection');
         }
 
-        if (ObjectQueryOrder::Shuffle === $this->orderBy) {
+        if (ObjectQueryOrderEnum::Shuffle === $this->orderBy) {
             \shuffle($source);
 
             return $source;
         }
 
-        if (ObjectQueryOrder::None !== $this->orderBy) {
+        if (ObjectQueryOrderEnum::None !== $this->orderBy) {
             if (null === $this->orderField) {
                 throw new InvalidModifierConfigurationException('orderBy', 'An order field must be provided');
             }
 
-            \usort($source, function ($elementA, $elementB) {
-                return $this->propertyAccessor->getValue($elementA, $this->orderField) <=> $this->propertyAccessor->getValue($elementB, $this->orderField);
+            \usort($source, function ($elementA, $elementB): bool {
+                return ObjectQueryOrderEnum::Descending === $this->orderBy
+                    ? $this->propertyAccessor->getValue($elementA, $this->orderField) <=> $this->propertyAccessor->getValue($elementB, $this->orderField)
+                    : $this->propertyAccessor->getValue($elementB, $this->orderField) <=> $this->propertyAccessor->getValue($elementA, $this->orderField)
+                ;
             });
-
-            if (ObjectQueryOrder::Descending === $this->orderBy) {
-                $source = \array_reverse($source);
-            }
 
             return $source;
         }

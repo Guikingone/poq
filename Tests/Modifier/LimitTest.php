@@ -11,7 +11,7 @@ namespace ObjectQuery\Tests\Modifier;
 
 use ObjectQuery\Exception\InvalidModifierConfigurationException;
 use ObjectQuery\ObjectQuery;
-use ObjectQuery\ObjectQueryOrder;
+use ObjectQuery\ObjectQueryOrderEnum;
 use ObjectQuery\Tests\AbstractQueryTest;
 
 class LimitTest extends AbstractQueryTest
@@ -51,7 +51,7 @@ class LimitTest extends AbstractQueryTest
     {
         $query = new ObjectQuery();
         $query->from($this->cities)
-            ->orderBy(ObjectQueryOrder::Descending, 'minimalAge')
+            ->orderBy(ObjectQueryOrderEnum::Descending, 'minimalAge')
             ->limit(1);
 
         $result = $query->select();

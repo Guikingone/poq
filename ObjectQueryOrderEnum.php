@@ -9,7 +9,7 @@
 
 namespace ObjectQuery;
 
-enum ObjectQueryOrder {
+enum ObjectQueryOrderEnum {
     case Ascending;
     case Descending;
     case None;
